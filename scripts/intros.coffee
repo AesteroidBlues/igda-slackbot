@@ -11,20 +11,18 @@ module.exports = (robot) ->
 
     robot.hear /^(?!.*(!intro))/i, (res) ->
         room = res.message.room
+        console.log room
         log_intro robot, res if room == "introduce-yourself"
 
 log_intro = (robot, res) ->
-    user = res.envelope.user.name
-    robot.brain.set "intro#{user.name}", res.message.text
-
-    intro = robot.brain.get "intro#{user.name}"
+    robot.brain.set "intro#{res.envelope.user.name}", res.message.text
+    intro = robot.brain.get "intro#{res.envelope.user.name}"
     verb = if intro is null then "logged" else "updated"
-    robot.send {user: {name: user.name}}, "Thanks #{user.name}, I've #{verb} your intro!"
+    res.send "Thanks #{res.envelope.user.name}, I've #{verb} your intro!"
 
 send_intro = (robot, res) ->
-    user = res.envelope.user.name
     intro = robot.brain.get "intro#{res.envelope.user.name}"
     if intro is null
-        robot.send {user: {name: user.name}}, "Sorry, #{res.envelope.user.name} doesn't have an intro recorded."
+        res.send "Sorry, #{res.envelope.user.name} doesn't have an intro recorded."
     else
-        robot.send {user: {name: user.name}}, intro
+        res.send intro
