@@ -11,7 +11,7 @@ module.exports = (robot) ->
 
     robot.hear /^(?!.*(!intro))/i, (res) ->
         room = res.message.room
-        log_intro robot, res #if room == "introduce-yourself"
+        log_intro robot, res if room == "introduce-yourself"
 
 log_intro = (robot, res) ->
     intro = robot.brain.get "intro#{res.envelope.user.name}"
@@ -27,7 +27,7 @@ log_intro = (robot, res) ->
 send_intro = (robot, res, user) ->
     intro = robot.brain.get "intro#{user}"
     params = {room: res.envelope.user.name}
-    
+
     if intro is null
         robot.send params, "Sorry, #{user} doesn't have an intro recorded."
     else
