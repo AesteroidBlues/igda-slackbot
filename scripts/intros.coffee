@@ -10,8 +10,8 @@
 
 module.exports = (robot) ->
     # Hear any string from any source and act if it looks like `!intro (@)username`
-    robot.hear /^!intro\s*@{0,1}(.*)\Z/i, (res) ->
-        send_intro robot, res, res.match[1]
+    robot.hear ///^(#{robot.name})?\s*!intro\s*@{0,1}(.*)$///i, (res) ->
+        send_intro robot, res, res.match[2]
 
     # Hear any string from any source
     robot.hear /^(?!.*(!intro))/i, (res) ->
