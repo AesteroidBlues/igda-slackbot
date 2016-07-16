@@ -20,7 +20,7 @@ module.exports = (robot) ->
         # Only log the intro if the room this msg came from was `introduce-yourself`
         log_intro robot, res if room == "introduce-yourself"
 
-    robot.respond /set intro\s+@?(.+)\s+(.*)/i, (res) ->
+    robot.respond /set intro\s+@?(\S+)\s+(.*)/i, (res) ->
         unless res.envelope.user.slack.is_admin
             res.send "Sorry, you do not have permission to set a user's intro."
             return;
@@ -42,14 +42,17 @@ log_intro = (robot, res) ->
     robot.send params, response
 
 set_intro = (robot, res, userName, intro) ->
+    # Don't save entries for non-existant users
+    unless robot.brain.userForName userName
+        res.send "#{userName} is not a user"
+        return
+
     # Save the text to the database
     robot.brain.set "intro#{userName}", intro
 
-    # PM the mod to let them know it's been done
-    params = {room: res.envelope.user.name}
     response = "I've set the intro for #{userName}";
 
-    robot.send params, response
+    res.send response
 
 send_intro = (robot, res, user) ->
     # Try to get the intro out of the database
