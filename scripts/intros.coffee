@@ -4,6 +4,7 @@
 #
 # Commands:
 #   !intro <username> Get the introduction message of a user.
+#   hubot !set-intro <username> <intro> - Manually set a user's intro. Requires mod permissions
 #
 # Notes:
 #   /shrug
@@ -19,6 +20,13 @@ module.exports = (robot) ->
         # Only log the intro if the room this msg came from was `introduce-yourself`
         log_intro robot, res if room == "introduce-yourself"
 
+    robot.respond /^!set\-intro\s+@?(.+)\s+(.*)$/i, (res) ->
+        unless robot.auth.hasRole(res.envelope.user, 'mod')
+            res.send "Sorry, you do not have permission to set a user's intro."
+            return;
+        set_intro robot, res, res.match[1], res.match[2]
+
+
 log_intro = (robot, res) ->
     # Silly logic to see if we should use the word `logged` or `updated` :|
     intro = robot.brain.get "intro#{res.envelope.user.name}"
@@ -30,6 +38,16 @@ log_intro = (robot, res) ->
     # PM the user to let them know we got their message.
     params = {room: res.envelope.user.name}
     response = "Thanks #{res.envelope.user.slack.profile.first_name}, I've #{verb} your intro!"
+
+    robot.send params, response
+
+set_intro = (robot, res, userName, intro) ->
+    # Save the text to the database
+    robot.brain.set "intro#{userName}", intro
+
+    # PM the mod to let them know it's been done
+    params = {room: res.envelope.user.name}
+    response = "I've set the intro for #{userName}";
 
     robot.send params, response
 
