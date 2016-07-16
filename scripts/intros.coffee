@@ -3,16 +3,16 @@
 #   channel on Slack.
 #
 # Commands:
-#   !intro <username> Get the introduction message of a user.
-#   hubot !set-intro <username> <intro> - Manually set a user's intro. Requires mod permissions
+#   hubot intro <username> Get the introduction message of a user.
+#   hubot set intro <username> <intro> - Manually set a user's intro. Requires `mod` permissions
 #
 # Notes:
 #   /shrug
 
 module.exports = (robot) ->
     # Hear any string from any source and act if it looks like `!intro (@)username`
-    robot.hear ///^(#{robot.name})?\s*!intro\s*@{0,1}(.*)$///i, (res) ->
-        send_intro robot, res, res.match[2]
+    robot.respond /intro\s*@{0,1}(.*)/i, (res) ->
+        send_intro robot, res, res.match[1]
 
     # Hear any string from any source
     robot.hear /^(?!.*(!intro))/i, (res) ->
@@ -20,7 +20,9 @@ module.exports = (robot) ->
         # Only log the intro if the room this msg came from was `introduce-yourself`
         log_intro robot, res if room == "introduce-yourself"
 
-    robot.hear /^!set\-intro\s+@?(.+)\s+(.*)$/i, (res) ->
+    robot.respond /set intro\s+@?(.+)\s+(.*)/i, (res) ->
+        user = robot.brain.userForName res.envelope.user.name
+        robot.logger.warning user
         unless robot.auth.hasRole(res.envelope.user, 'mod')
             res.send "Sorry, you do not have permission to set a user's intro."
             return;
