@@ -21,9 +21,7 @@ module.exports = (robot) ->
         log_intro robot, res if room == "introduce-yourself"
 
     robot.respond /set intro\s+@?(.+)\s+(.*)/i, (res) ->
-        user = robot.brain.userForName res.envelope.user.name
-        robot.logger.warning user
-        unless robot.auth.hasRole(res.envelope.user, 'mod')
+        unless res.envelope.user.slack.is_admin
             res.send "Sorry, you do not have permission to set a user's intro."
             return;
         set_intro robot, res, res.match[1], res.match[2]

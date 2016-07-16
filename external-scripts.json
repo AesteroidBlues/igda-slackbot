@@ -9,6 +9,5 @@
   "hubot-redis-brain",
   "hubot-rules",
   "hubot-shipit",
-  "hubot-heroku-keepalive",
-  "hubot-auth"
+  "hubot-heroku-keepalive"
 ]
