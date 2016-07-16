@@ -20,7 +20,7 @@ module.exports = (robot) ->
         # Only log the intro if the room this msg came from was `introduce-yourself`
         log_intro robot, res if room == "introduce-yourself"
 
-    robot.respond /^!set\-intro\s+@?(.+)\s+(.*)$/i, (res) ->
+    robot.hear /^!set\-intro\s+@?(.+)\s+(.*)$/i, (res) ->
         unless robot.auth.hasRole(res.envelope.user, 'mod')
             res.send "Sorry, you do not have permission to set a user's intro."
             return;
