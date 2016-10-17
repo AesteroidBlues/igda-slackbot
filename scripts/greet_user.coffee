@@ -14,9 +14,8 @@ module.exports = (robot) ->
 
 greet_user = (robot, res) ->
 	user_first = res.envelope.user.slack.profile.first_name
-	params = { room: res.message.user.id }
-	console.log params
-	console.log user_first
+	params = { room: res.message.user.name }
+	
 	greeting = "
 				Hi there #{user_first}, welcome to the SD Game Dev Slack channel! We 
 				hope you enjoy your stay! Please take a moment to introduce introduce
