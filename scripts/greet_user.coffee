@@ -9,13 +9,14 @@ module.exports = (robot) ->
     #Fires when a user enters a channel hubot is in
     robot.enter (res) ->
     	user_id = res.message.user.id
-    	console.log user_id
     	unless robot.brain.userForName user_id
-    		greet_user(robot, res);
+    		greet_user robot, res;
 
 greet_user = (robot, res) ->
 	user_first = res.envelope.user.slack.profile.first_name
 	params = { room: res.message.user.id }
+	console.log params
+	console.log user_first
 	greeting = "
 				Hi there #{user_first}, welcome to the SD Game Dev Slack channel! We 
 				hope you enjoy your stay! Please take a moment to introduce introduce
