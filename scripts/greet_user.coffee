@@ -9,7 +9,7 @@ module.exports = (robot) ->
     #Fires when a user enters a channel hubot is in
     robot.enter (res) ->
     	user_id = res.message.user.id
-    	unless robot.brain.userForName user_id
+    	unless robot.brain.userForId user_id
     		greet_user robot, res;
 
 greet_user = (robot, res) ->
