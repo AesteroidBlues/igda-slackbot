@@ -9,6 +9,7 @@ module.exports = (robot) ->
     #Fires when a user enters a channel hubot is in
     robot.enter (res) ->
     	user_id = res.message.user.id
+    	console.log user_id
     	unless robot.brain.userForName user_id
     		greet_user(robot, res);
 
@@ -23,5 +24,5 @@ greet_user = (robot, res) ->
 				see someone else's introduction, just private message me with
 				`!intro @username` and I'll get it for you!
 				"
-	robot.send params, res
+	robot.send params, greeting
 
