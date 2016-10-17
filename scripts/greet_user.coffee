@@ -23,5 +23,5 @@ greet_user = (robot, res) ->
 				see someone else's introduction, just private message me with
 				`!intro @username` and I'll get it for you!
 				"
-	robot.send params, response
+	robot.send params, res
 
