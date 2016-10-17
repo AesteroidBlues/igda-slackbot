@@ -1,6 +1,6 @@
 # Description:
-#   Load and store introductory messages from members by listening to the #introduce-yourself
-#   channel on Slack.
+#   Automatically send a welcome message to any new user in the Slack,
+#   remembers users we've seen so we don't spam.
 #
 # Notes:
 #   /shrug
